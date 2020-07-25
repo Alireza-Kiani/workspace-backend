@@ -61,6 +61,7 @@ userSchema.methods.generateAuthToken = async function () {
     console.log(token)
     return token;
 }
+
 //hashing plain password
 userSchema.pre("save", async function (next) {
     const user = this
@@ -71,6 +72,7 @@ userSchema.pre("save", async function (next) {
 
     next();
 })
+
 //hiding password and tokens
 userSchema.methods.toJSON = function () {
     const user = this;
@@ -83,6 +85,7 @@ userSchema.methods.toJSON = function () {
 
     return userObject;
 }
+
 //finding account by username and password
 userSchema.statics.findByCredentials = async (userName, password) => {
     const user = await User.findOne({userName});
