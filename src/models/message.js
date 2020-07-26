@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Schema from "mongoose";
 
+
 //
 const messageSchema = new mongoose.Schema({
     from: {
@@ -8,7 +9,7 @@ const messageSchema = new mongoose.Schema({
         required: true
     },
     to: {
-        type: String,
+        type: Schema.ObjectId,
         required: true
     },
     content: {

@@ -44,7 +44,7 @@ userRouter.post("/user/login", async (req, res) => {
 })
 
 //validating users current token
-userRouter.get("/user/isloggedin", userAuth, async (req, res) => {
+userRouter.get("/user/is-logged-in", userAuth, async (req, res) => {
     res.status(200).send({user: req.user, result: true});
 });
 
