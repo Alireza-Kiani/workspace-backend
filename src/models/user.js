@@ -58,7 +58,6 @@ userSchema.methods.generateAuthToken = async function () {
     user.tokens.push({ token });
 
     await user.save();
-    console.log(token)
     return token;
 }
 
