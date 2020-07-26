@@ -33,11 +33,11 @@ const userSchema = new mongoose.Schema({
         trim: true,
         unique: true,
         lowerCase: true,
-        // validate(value) {
-        //     if(!validator.isEmail(value)) {
-        //         throw new Error("Invalid Email!")
-        //     }
-        // }
+        validate(value) {
+            if(!validator.isEmail(value)) {
+                throw new Error("Invalid Email!")
+            }
+        }
     },
     tokens: [{
         token: {
@@ -86,9 +86,9 @@ userSchema.methods.toJSON = function () {
     return userObject;
 }
 
-//finding account by username and password
-userSchema.statics.findByCredentials = async (userName, password) => {
-    const user = await User.findOne({userName});
+//finding account by email and password
+userSchema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({email});
     if(!user) {
         throw ({error:'Unable to find the user'});
     }

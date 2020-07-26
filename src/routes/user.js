@@ -26,14 +26,15 @@ userRouter.post("/user/register", async (req, res) => {
 
 //log in
 // body: {
-//     "userName": "",
+//     "email": "",
 //     "password": ""
 // }
 userRouter.post("/user/login", async (req, res) => {
     try {
-        const user = await User.findByCredentials(req.body.userName, req.body.password);
+        const user = await User.findByCredentials(req.body.email, req.body.password);
         const token = await user.generateAuthToken();
-        res.cookie('Authorization', 'Bearer ' + token, {
+        res.cookie('Authorization',
+            'Bearer ' + token, {
             expires: new Date(Date.now() + 5 * 24 * 3600000)
         }).status(200).send({user, token});
     } catch(e) {
