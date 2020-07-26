@@ -40,6 +40,9 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    chats: [{
+        type: Schema.ObjectId,
+    }],
     tokens: [{
         token: {
             type: String,
@@ -95,7 +98,6 @@ userSchema.statics.findByCredentials = async (email, password) => {
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log(password, user.password);
     if(!isMatch) {
         throw ({error:'Password is incorrect'});
     }

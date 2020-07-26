@@ -1,6 +1,6 @@
 import express from "express";
 import User from "../models/user.js";
-import userAuth from "../middleware/userauth.js";
+import userAuth from "../middleware/userAuth.js";
 
 
 //

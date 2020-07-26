@@ -2,20 +2,20 @@ import Chat from "../models/chat.js";
 import User from "../models/user.js";
 import Message from "../models/message.js";
 
-import cRS from "crypto-random-string"
+import cRS from "crypto-random-string";
 
 //
-const createGroupChat = async (boardId, creator) => {
-    const chat = new Chat({chatId: boardId, users: [creator]});
-    console.log(chat)
+export const sendMessage = async (from, to, content) => {
+    const message = new Message(from, to, content);
+    message.save();
 }
 
-//
-const createDirectChat = async () => {
-
-}
-
-//
-const getAllChats = async () => {
-
+export const getChats = async (userId) => {
+    let chats = [];
+    const user = await User.findById(userId);
+    for (const _id of user.chats) {
+        const chat = await Chat.findById(_id);
+        chats.push(chat)
+    }
+    return chats;
 }

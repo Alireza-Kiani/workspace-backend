@@ -13,7 +13,7 @@ io.on("connection", async (socket) => {
     //emit when socket connected
     //returns a users all notifications
     socket.on("connected", async (userId) => {
-        socket.emit("pushNotifications",await getNotifications("5f1bfd7a013be81930ab9a67"));
+        socket.emit("pushNotifications",await getNotifications(userId));
     })
 
     //adding a notification emit
@@ -22,4 +22,9 @@ io.on("connection", async (socket) => {
         addNotification(content, userId);
     })
 
+    //sending message
+    //input: from: userId, to: chatId, message
+    socket.on("sendMessage", (from, to, content) => {
+
+    })
 })

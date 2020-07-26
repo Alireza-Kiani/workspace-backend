@@ -5,11 +5,11 @@ import Schema from "mongoose";
 //
 const messageSchema = new mongoose.Schema({
     from: {
-        type: String,
+        type: Schema.ObjectId,
         required: true
     },
     to: {
-        type: Schema.ObjectId,
+        type: String,
         required: true
     },
     content: {

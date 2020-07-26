@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import User from"../models/user.js";
 
 //
-const userauth = async (req, res, next) => {
+const userAuth = async (req, res, next) => {
     try{
         let token;
         //getting token from cookies or saved token in postman
@@ -26,4 +26,4 @@ const userauth = async (req, res, next) => {
     }
 }
 
-export default userauth;
+export default userAuth;
