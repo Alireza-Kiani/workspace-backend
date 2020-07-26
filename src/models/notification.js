@@ -10,7 +10,6 @@ const notificationSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        unique: true,
     },
     userId: {
         type: Schema.Types.ObjectId,

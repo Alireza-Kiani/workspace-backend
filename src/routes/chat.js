@@ -4,6 +4,7 @@ import userAuth from "../middleware/userAuth.js";
 import cryptoRandomString from "crypto-random-string";
 import User from "../models/user.js";
 import {getChats} from "../services/chat.js";
+import {ErrorEnum, TypeEnum} from "../misc/enum.js";
 
 
 //
@@ -15,7 +16,7 @@ const chatRouter = new express.Router();
 //     "boardId": ""
 // }
 chatRouter.post("/chat/create-group", userAuth, async (req, res) => {
-    const chat = new Chat({chatId: req.body.boardId, users: [req.user._id], type: "GROUP"});
+    const chat = new Chat({chatId: req.body.boardId, users: [req.user._id], type: TypeEnum.Group});
     let user = await User.findById(req.user._id);
     console.log(user)
     console.log(user.chats)
@@ -38,7 +39,7 @@ chatRouter.post("/chat/create-direct", userAuth, async (req, res) => {
         return res.status(400).send({e: "two users are same account"});
     }
 
-    const chat = new Chat({chatId: cryptoRandomString({length: 12}), users: [req.user._id, req.body._id], type: "DIRECT"});
+    const chat = new Chat({chatId: cryptoRandomString({length: 12}), users: [req.user._id, req.body._id], type: TypeEnum.Direct});
     let user = await User.findById(req.body._id);
     user.chats.push(chat._id);
     req.user.chats.push(chat._id);
