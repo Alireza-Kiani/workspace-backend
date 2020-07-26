@@ -13,7 +13,7 @@ const __dirname = path.resolve();
 //
 const app = express();
 export const server = http.createServer(app);
-const port =process.env.port ||3001;
+const port = process.env.port || 8080;
 const publicDirectoryPath = path.join(__dirname, "/public");
 
 
