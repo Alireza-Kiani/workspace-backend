@@ -44,7 +44,7 @@ addButton.addEventListener("click", (e) => {
 socket.emit("connected", user._id)
 socket.on("pushNotifications", (notifications) => {
     notifications.forEach((item) => {
-        console.log(notifications.content)
+        console.log(item.content)
     })
 })
 
