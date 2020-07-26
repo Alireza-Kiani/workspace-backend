@@ -1,4 +1,8 @@
 import mongoose from "mongoose";
+import Schema from "mongoose";
+
+
+import User from "./user.js";
 
 //
 const notificationSchema = new mongoose.Schema({
@@ -9,8 +13,8 @@ const notificationSchema = new mongoose.Schema({
         unique: true,
     },
     userId: {
-        type: String,
-        required: true,
+        type: Schema.Types.ObjectId,
+        ref: "User"
     }
 },{
     timestamps: true

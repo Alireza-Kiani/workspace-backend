@@ -25,6 +25,14 @@ function render(content, sender, time) {
     document.querySelector("#notifications").appendChild(node);
 }
 
+const user = {
+    _id: "5f1bfd7a013be81930ab9a67",
+    userName: "r",
+    email: "r"
+}
+
+
+
 addButton.addEventListener("click", (e) => {
 
     if (!inputField.value) return;
@@ -32,6 +40,12 @@ addButton.addEventListener("click", (e) => {
     inputField.value = null;
 })
 
-console.log(socket)
-socket.emit("addNotification", "heellooo", "12345")
+
+socket.emit("connected", user._id)
+socket.on("pushNotifications", (notifications) => {
+    notifications.forEach((item) => {
+        console.log(notifications.content)
+    })
+})
+
 
