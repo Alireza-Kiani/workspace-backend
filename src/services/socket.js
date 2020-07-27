@@ -2,6 +2,7 @@ import socketio from "socket.io";
 import {server} from "../server.js";
 import {addNotification, getNotifications} from "./notification.js";
 import {getChats, sendMessage} from "./chat.js";
+import {pushNotificationToCache} from "./notification.js";
 
 const io = socketio(server);
 
@@ -15,6 +16,7 @@ io.on("connection", async (socket) => {
     //emit when socket connected
     //returns a users all notifications
     socket.on("connected", async (userId) => {
+        await pushNotificationToCache(userId);
         socket.emit("receiveNotifications",await getNotifications(userId));
         const chats = await getChats(userId)
         chats.forEach((item) => {

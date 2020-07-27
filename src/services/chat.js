@@ -14,14 +14,14 @@ export const sendMessage = async (from, to, content) => {
     for (const item of chat.users) {
         await User.findById(item);
         if (item != from) {
-            await addNotification(NotificationEnum.newMessage, item);
+            await addNotification(NotificationEnum.NewMessage, item);
         }
     }
 }
 
-(async function() {
-    await sendMessage("5f1dbefaa4eb3e3df026d56f", "5498429a9cfc", "hello");
-})();
+// (async function() {
+//     await sendMessage("5f1dbefaa4eb3e3df026d56f", "5498429a9cfc", "hello");
+// })();
 
 export const getChats = async (userId) => {
     let chats = [];
