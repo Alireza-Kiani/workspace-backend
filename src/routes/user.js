@@ -97,15 +97,14 @@ userRouter.post("/user/forgot-password", async (req, res) => {
         return res.status(400).send(ErrorEnum.EmailNotFound);
     }
 
-    const x = await sendEmail(email, "Recover Password", await cryptr.decrypt(user.password));
-    console.log(x)
-    // if (!response.error) {
-    //     return res.status(200).send(response.info.response);
-    // } else {
-    //     console.log(response.error);
-    //     return res.status(500).send();
-    // }
-        return res.status(200).send();
+    await sendEmail(email, "Recover Password", await cryptr.decrypt(user.password), function (error, info) {
+        if (error) {
+            return res.status(500).send({
+                error, status: "Failed"
+            });
+        }
+        res.status(200).send({info, status: "Succeed"});
+    })
 
 });
 
