@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 import validator from "validator";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
 import Schema from "mongoose";
+import Cryptr from "cryptr";
+const cryptr = new Cryptr('myTotallySecretKey');
+
 
 //
 const userSchema = new mongoose.Schema({
@@ -62,7 +64,6 @@ userSchema.methods.generateAuthToken = async function () {
     user.tokens.push({ token });
 
     await user.save();
-    console.log(token)
     return token;
 }
 
@@ -71,7 +72,9 @@ userSchema.pre("save", async function (next) {
     const user = this
     //hashing users password every time a new password is saved
     if (user.isModified("password")) {
-        user.password = await bcrypt.hash(user.password, 8);
+        // user.password = await bcrypt.hash(user.password, 8);
+        user.password = await cryptr.encrypt(user.password);
+
     }
 
     next();
@@ -97,8 +100,12 @@ userSchema.statics.findByCredentials = async (email, password) => {
         throw ({error:'Unable to find the user'});
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if(!isMatch) {
+    // const isMatch = await bcrypt.compare(password, user.password);
+    // if(!isMatch) {
+    //     throw ({error:'Password is incorrect'});
+    // }
+
+    if(cryptr.decrypt(user.password) != password) {
         throw ({error:'Password is incorrect'});
     }
 

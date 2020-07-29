@@ -27,6 +27,19 @@ export const addNotification = async (content, userId) => {
     await cacheIt(RedisEnum.Notification, userId, notifications, true);
 }
 
+export const deleteNotification = async (content, userId) => {
+
+    const notification = new Notification({content, userId});
+    let notifications = await getNotifications(userId) || [];
+
+    const index = notifications.indexOf(notification);
+    if (index == -1) {
+        return
+    }
+    notifications.splice(index, 1);
+    await cacheIt(RedisEnum.Notification, userId, notifications, true);
+}
+
 export const pushUpdateDB = async (userId) => {
     const notifications = await getNotifications(userId) || [];
     for (const item of notifications) {

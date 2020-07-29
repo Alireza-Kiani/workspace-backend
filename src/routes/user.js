@@ -1,6 +1,13 @@
 import express from "express";
 import User from "../models/user.js";
+import { } from "../misc/enum.js";
 import userAuth from "../middleware/userAuth.js";
+import validator from "validator";
+import {sendEmail} from "../services/email.js";
+import {ErrorEnum} from "../misc/enum.js";
+import Cryptr from "cryptr";
+const cryptr = new Cryptr('myTotallySecretKey');
+
 
 
 //
@@ -65,6 +72,41 @@ userRouter.delete("/user/logout", userAuth, async (req, res) => {
 //profile
 userRouter.get("/user/me", userAuth, async (req, res) => {
     res.status(200).send(req.user);
+});
+
+//forgot password
+// {
+//     "email": ""
+// }
+userRouter.post("/user/forgot-password", async (req, res) => {
+    const email = req.body.email;
+    if(!validator.isEmail(email)) {
+        return res.status(400).send(ErrorEnum.InvalidEmail);
+    }
+
+    let user = null;
+
+    try {
+        user = await User.findOne({email});
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(ErrorEnum.DBSync);
+    }
+
+    if(!user) {
+        return res.status(400).send(ErrorEnum.EmailNotFound);
+    }
+
+    const x = await sendEmail(email, "Recover Password", await cryptr.decrypt(user.password));
+    console.log(x)
+    // if (!response.error) {
+    //     return res.status(200).send(response.info.response);
+    // } else {
+    //     console.log(response.error);
+    //     return res.status(500).send();
+    // }
+        return res.status(200).send();
+
 });
 
 
