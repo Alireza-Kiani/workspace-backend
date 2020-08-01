@@ -8,6 +8,7 @@ import cors from "cors";
 import "./db/mongoose.js"
 import userRouter from "./routes/user.js";
 import chatRouter from "./routes/chat.js";
+import boardRouter from "./routes/board.js";
 //
 const __dirname = path.resolve();
 
@@ -34,6 +35,7 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 app.use(userRouter);
+app.use(boardRouter);
 app.use(chatRouter);
 app.use(express.static(publicDirectoryPath));
 //
