@@ -1,6 +1,7 @@
 import express from "express";
 import User from "../models/user.js";
 import userAuth from "../middleware/userauth.js";
+import bcrypt from 'bcryptjs';
 
 
 //
@@ -44,7 +45,7 @@ userRouter.post("/user/login", async (req, res) => {
 })
 
 //validating users current token
-userRouter.get("/user/isloggedin", userAuth, async (req, res) => {
+userRouter.get("/user/is-logged-in", userAuth, async (req, res) => {
     res.status(200).send({user: req.user, result: true});
 });
 
@@ -66,12 +67,6 @@ userRouter.delete("/user/logout", userAuth, async (req, res) => {
 userRouter.get("/user/me", userAuth, async (req, res) => {
     res.status(200).send(req.user);
 });
-
-
-
-
-
-
 
 
 export default userRouter;
