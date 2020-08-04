@@ -47,7 +47,7 @@ chatRouter.post("/chat/create-direct", userAuth, async (req, res) => {
         await chat.save();
         user.save();
         req.user.save();
-        res.status(201).send({chat});
+        res.status(201).send({chatId: chat._id, user: user});
     } catch (e) {
         res.status(400).send(e);
     }

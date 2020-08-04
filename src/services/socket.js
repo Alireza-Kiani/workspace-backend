@@ -16,9 +16,9 @@ io.on("connection", async (socket) => {
     socket.on("connected", async (userId) => {
         await pushNotificationToCache(userId);
         socket.emit("receiveNotifications",await getNotifications(userId));
-        const chats = await getChats(userId)
+        const chats = await getChats(userId);
         chats.forEach((item) => {
-            socket.join(item);
+            socket.join(item.chatId);
         })
     })
 

@@ -36,7 +36,7 @@ export const getChats = async (userId) => {
     for (const chat of chats) {
         const target = chat.users.filter(item => item !== userId);
         const message = await Message.findOne({to: userId} , { sort: { 'created_at' : -1 }});
-        response.push({user: await User.findById(target), latestMessage: message});
+        response.push({user: await User.findById(target), latestMessage: message, chatId: chat.chatId});
     }
 
     return response;
