@@ -8,15 +8,15 @@ import {NotificationEnum} from "../misc/enum.js";
 
 //
 export const sendMessage = async (from, to, content) => {
-    const message = await new Message({from, to, content});
-    message.save();
+    const message = new Message({from, to, content});
+    await message.save();
     let chat = await Chat.findOne({chatId: to});
-    for (const item of chat.users) {
-        await User.findById(item);
-        if (item != from) {
-            await addNotification(NotificationEnum.NewMessage, item);
-        }
-    }
+//     for (const item of chat.users) {
+//         await User.findById(item);
+//         if (item != from) {
+//             await addNotification(NotificationEnum.NewMessage, item);
+//         }
+//     }
 }
 
 // (async function() {
