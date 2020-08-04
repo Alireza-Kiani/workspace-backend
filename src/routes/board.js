@@ -44,6 +44,7 @@ boardRouter.delete("/board", userAuth, async (req, res) => {
             user.chats.splice(index, 1);
             user.save();
         }
+
         chat.remove();
         board.remove();
         res.status(200).send();

@@ -25,11 +25,20 @@ export const sendMessage = async (from, to, content) => {
 
 export const getChats = async (userId) => {
     let chats = [];
+    let response = [];
     const user = await User.findById(userId);
+
     for (const _id of user.chats) {
         const chat = await Chat.findById(_id);
-        chats.push(chat)
+        chats.push(chat);
     }
-    return chats;
+
+    for (const chat of chats) {
+        const target = chat.users.filter(item => item !== userId);
+        const message = await Message.findOne({to: userId} , { sort: { 'created_at' : -1 }});
+        response.push({user: await User.findById(target), latestMessage: message});
+    }
+
+    return response;
 }
 

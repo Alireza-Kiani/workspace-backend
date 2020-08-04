@@ -9,8 +9,6 @@ const io = socketio(server);
 
 
 io.on("connection", async (socket) => {
-
-
     //connection emit
     //input: userId
     //emit when socket connected
