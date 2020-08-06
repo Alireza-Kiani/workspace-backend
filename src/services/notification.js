@@ -4,14 +4,15 @@ import {RedisEnum, ErrorEnum} from "../misc/enum.js";
 
 export const pushNotificationToCache = async (userId) => {
     try {
-        await cacheIt(RedisEnum.Notification, userId, await Notification.find({userId}) || [], true);
+        const notifications =  await Notification.find({userId}) || [];
+        await cacheIt(RedisEnum.Notification, userId,notifications, true);
     } catch (e) {
         console.log({"Error": ErrorEnum.RedisSync})
     }
 }
 
 export const getNotifications = async (userId) => {
-    return cacheIt(RedisEnum.Notification, userId, null, false);
+    return cacheIt(RedisEnum.Notification, userId, null, false) || null;
 }
 
 export const addNotification = async (content, userId) => {
@@ -33,7 +34,7 @@ export const deleteNotification = async (content, userId) => {
     let notifications = await getNotifications(userId) || [];
 
     const index = notifications.indexOf(notification);
-    if (index == -1) {
+    if (index === -1) {
         return
     }
     notifications.splice(index, 1);

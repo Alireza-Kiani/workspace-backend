@@ -108,6 +108,10 @@ boardRouter.post("/board/add-member", userAuth, async (req, res) => {
 
 });
 
+//getting a users all boards
+// boardRouter.get("/board/all", userAuth, async (req, res) => {
+//
+// })
 
 //
 export default boardRouter;

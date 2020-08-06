@@ -4,7 +4,7 @@ import Message from "../models/message.js";
 
 import cRS from "crypto-random-string";
 import {addNotification} from "./notification.js";
-import {NotificationEnum} from "../misc/enum.js";
+import {NotificationEnum, ErrorEnum} from "../misc/enum.js";
 
 //
 export const sendMessage = async (from, to, content) => {
@@ -17,11 +17,11 @@ export const sendMessage = async (from, to, content) => {
 //             await addNotification(NotificationEnum.NewMessage, item);
 //         }
 //     }
+    return message;
 }
 
-// (async function() {
-//     await sendMessage("5f1dbefaa4eb3e3df026d56f", "5498429a9cfc", "hello");
-// })();
+
+
 
 export const getChats = async (userId) => {
     let chats = [];
@@ -35,10 +35,17 @@ export const getChats = async (userId) => {
 
     for (const chat of chats) {
         const target = chat.users.filter(item => item.toString() !== user._id.toString());
-        const message = await Message.findOne({to: chat.chatId}).sort({'createdAt': 1});
+        const message = await Message.findOne({to: chat.chatId}).sort({'createdAt': -1});
         response.push({user: await User.findById(target), latestMessage: message, chatId: chat.chatId});
     }
 
     return response;
 }
 
+export const getMessages = async (chatId) => {
+    try {
+        return await Message.find({to: chatId});
+    } catch (e) {
+        return ErrorEnum.DBSync;
+    }
+}

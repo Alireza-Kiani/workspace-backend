@@ -5,6 +5,7 @@ import cryptoRandomString from "crypto-random-string";
 import User from "../models/user.js";
 import {getChats} from "../services/chat.js";
 import {ErrorEnum, TypeEnum} from "../misc/enum.js";
+import {getMessages} from "../services/chat.js";
 
 
 //
@@ -47,7 +48,7 @@ chatRouter.post("/chat/create-direct", userAuth, async (req, res) => {
         await chat.save();
         user.save();
         req.user.save();
-        res.status(201).send({chatId: chat._id, user: user});
+        res.status(201).send({chatId: chat.chatId, user: user});
     } catch (e) {
         res.status(400).send(e);
     }
@@ -55,8 +56,13 @@ chatRouter.post("/chat/create-direct", userAuth, async (req, res) => {
 
 //get chats
 chatRouter.get("/chat/all", userAuth, async (req, res) => {
-    res.status(201).send(await getChats(req.user._id));
+    res.status(200).send(await getChats(req.user._id));
 });
+
+//get messages
+chatRouter.get("/chat/messages/:chatId", userAuth, async (req, res) => {
+    res.status(200).send(await getMessages(req.params.chatId));
+})
 
 
 export default chatRouter;

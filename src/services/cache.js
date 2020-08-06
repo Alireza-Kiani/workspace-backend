@@ -21,6 +21,11 @@ client.hdel = util.promisify(client.hdel);
 export let cacheIt = async (hashKey, key, input, toggle) => {
     //toggle = true -> set
     //toggle = false -> get
+
+    if (key.isEmpty) {
+        return
+    }
+
     if (toggle) {
         client.hset(hashKey, key, JSON.stringify(input));
     } else {
