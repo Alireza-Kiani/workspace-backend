@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Schema from "mongoose";
 
 
 
@@ -12,6 +13,10 @@ const cardSchema = new mongoose.Schema({
     },
     content: {
         type: String
+    },
+    motherList: {
+        type: Schema.Types.ObjectId,
+        required: true
     }
 });
 

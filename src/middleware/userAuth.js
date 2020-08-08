@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from"../models/user.js";
+import UserClass from "../controllers/user.js";
 
 //
 const userAuth = async (req, res, next) => {
@@ -12,7 +12,7 @@ const userAuth = async (req, res, next) => {
           token = req.cookies.Authorization.replace("Bearer ", "");
         }
         const decoded = jwt.verify(token, "user");
-        const user = await User.findOne({_id: decoded._id, "tokens.token": token});
+        const user = await UserClass.findOne({_id: decoded._id, "tokens.token": token});
         if(!user) {
             throw ({error: "Please Authorize"});
         }

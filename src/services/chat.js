@@ -20,9 +20,6 @@ export const sendMessage = async (from, to, content) => {
     return message;
 }
 
-
-
-
 export const getChats = async (userId) => {
     let chats = [];
     let response = [];

@@ -13,10 +13,7 @@ const listSchema = new mongoose.Schema({
     motherBoard: {
         type: Schema.Types.ObjectId,
         required: true
-    },
-    cards: [{
-        type: Schema.Types.ObjectId
-    }]
+    }
 });
 
 const List = mongoose.model("List", listSchema);
