@@ -3,21 +3,22 @@ import validator from "validator";
 import {ErrorEnum} from "../misc/enum.js";
 import {sendEmail} from "../services/email.js";
 import Cryptr from "cryptr";
+
 const cryptr = new Cryptr('myTotallySecretKey');
 
 class UserClass {
 
     createModel = async (user) => {
         return new User(user);
-    };
+    }
 
     findById = async (userId) => {
         return await User.findById(userId);
-    };
+    }
 
     findOne = async (user) => {
         return await User.findOne(user);
-    };
+    }
 
     //api
 
@@ -31,7 +32,7 @@ class UserClass {
         } catch(e) {
             res.status(400).send(e);
         }
-    };
+    }
 
     logIn = async (req, res) => {
         try {
@@ -45,11 +46,11 @@ class UserClass {
             console.log(e);
             res.status(400).send(e);
         }
-    };
+    }
 
     checkToken = async (req, res) => {
         res.status(200).send({user: req.user, result: true});
-    };
+    }
 
     logOut = async (req, res) => {
         try{

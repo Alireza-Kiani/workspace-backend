@@ -27,9 +27,8 @@ boardRouter.delete("/board", userAuth, Board.deleteBoard);
 boardRouter.post("/board/add-member", userAuth, Board.addMember);
 
 //getting a users all boards
-// boardRouter.get("/board/all", userAuth, async (req, res) => {
-//
-// })
+boardRouter.get("/board/all", userAuth, Board.getBoards);
+
 
 //
 export default boardRouter;

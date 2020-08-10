@@ -1,11 +1,13 @@
 import Board from "../models/boards.js";
 import {ErrorEnum, TypeEnum} from "../misc/enum.js";
-import ChatClass from "./chat.js";
-import UserClass from "./user.js";
+import Chat from "./chat.js";
+import User from "./user.js";
 
 class BoardClass {
 
-
+    findById = async (_id) => {
+        return Board.findById(_id)
+    }
 
     //api
 
@@ -14,7 +16,7 @@ class BoardClass {
         board.users.push(req.user._id);
         try {
             board.save();
-            const chat = await ChatClass.createModel(board._id, req.user._id, TypeEnum.Group);
+            const chat = await Chat.createModel(board._id, req.user._id, TypeEnum.Group);
             chat.save();
             req.user.chats.push(chat._id);
             req.user.save();
@@ -27,9 +29,9 @@ class BoardClass {
     deleteBoard = async (req, res) => {
         try {
             const board = await Board.findById(req.body._id);
-            const chat = await ChatClass.findOne({chatId: req.body._id});
+            const chat = await Chat.findOne({chatId: req.body._id});
             for (const userId of board.users) {
-                const user = await UserClass.findById(userId);
+                const user = await User.findById(userId);
                 const index = user.chats.indexOf(chat._id);
                 user.chats.splice(index, 1);
                 user.save();
@@ -47,6 +49,7 @@ class BoardClass {
         let board = null;
         let user = null;
         let chat = null;
+        let users = [];
 
         try {
             board = await Board.findById(req.body.boardId);
@@ -63,7 +66,7 @@ class BoardClass {
         }
 
         try {
-            user = await UserClass.findOne({email: req.body.email});
+            user = await User.findOne({email: req.body.email});
         } catch (e) {
             return res.status(500).send(ErrorEnum.DBSync);
         }
@@ -74,7 +77,7 @@ class BoardClass {
         }
 
         try {
-            chat = await ChatClass.findOne({chatId: board._id});
+            chat = await Chat.findOne({chatId: board._id});
         } catch (e) {
             console.log(e)
             return res.status(500).send(ErrorEnum.DBSync);
@@ -91,9 +94,30 @@ class BoardClass {
         } catch (e) {
             return res.status(500).send(ErrorEnum.DBSync);
         }
-        res.status(200).send(board);
+
+        for (const user of board.users) {
+            users.push( await User.findById(user));
+        }
+
+        res.status(200).send({board, users});
     }
 
+    getBoards = async (req, res) => {
+        let boards = [];
+        for (const chatId of req.user.chats) {
+            const chat = await Chat.findById(chatId);
+            if (chat){
+                if (chat.type === TypeEnum.Group) {
+                    const board = await new BoardClass().findById(chat.chatId)
+                    if (board) {
+                        boards.push(board);
+                    }
+                }
+            }
+        }
+        res.status(200).send(boards)
+
+    }
 }
 
 export default new BoardClass();
